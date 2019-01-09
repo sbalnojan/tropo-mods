@@ -17,16 +17,15 @@ class AutoEc2:
         my_instance1=ec2.Instance("myinstance1", ImageId=self.ami_name, InstanceType="t1.micro")
         self.t.add_resource(my_instance1)
 
-        self.t.add_resource(Parameter("SshKeyName",
+        self.t.add_parameter(Parameter("SshKeyName",
     Description="Name of an existing EC2 KeyPair to enable SSH "
                 "access to the instance",
     Type="String"))
 
-        self.t.add_resource(Output(
+        self.t.add_output(Output(
         "PublicIP",
         Description="Public IP address of the newly created EC2 instance",
-        Value=GetAtt(my_instance1, "PublicIp"),
-            Export=Export(Name="myinstance1PublicIp"),
-    ))
+        Value=GetAtt(my_instance1, "PublicIp")))
+
     def print_to_yaml(self):
         print(self.t.to_yaml())
