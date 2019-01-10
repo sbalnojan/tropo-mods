@@ -32,8 +32,33 @@ Outputs:
     Value: !GetAtt myinstance1.PublicIp
         
 ````
+### Next Up 1
 
-### Next Up
+````python
+my_instance = auto_ec2()
+my_instance.add_sg(port=3000,cidrIp="0.0.0.0/0")
+my_instance.add_ud("!Sub | #!/bin/bash -xe "\
+            "./home/ec2-user/my-app &")
+````
+should turn into an instance running our app, open to any http traffic on port 3000.
+````bash
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: "t2.micro"
+      SecurityGroups:
+      - Ref: InstanceSecurityGroup
+      ImageId: "ami-0000"
+      IamInstanceProfile: !Ref InstanceProfile
+      UserData:
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash -xe
+            ./home/ec2-user/my-app &
+
+````
+### Next Up 2
 Code like
 ````python
 my_instance = auto_ec2(asg=False)
