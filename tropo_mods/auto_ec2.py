@@ -35,7 +35,8 @@ class AutoEc2:
         self.t.add_output(
             Output(
                 "PublicIP",
-                Description="Public IP address of the newly created " "EC2 instance",
+                Description="Public IP address of the newly created "
+                "EC2 instance",
                 Value=GetAtt(my_instance1, "PublicIp"),
             )
         )
