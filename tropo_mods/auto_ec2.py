@@ -14,13 +14,17 @@ class AutoEc2:
         self.construct_basics()
 
     def construct_basics(self):
-        my_instance1=ec2.Instance("myinstance1", ImageId=self.ami_name, InstanceType="t1.micro")
-        self.t.add_resource(my_instance1)
 
-        self.t.add_parameter(Parameter("SshKeyName",
+        my_param1 = Parameter("SshKeyName",
     Description="Name of an existing EC2 KeyPair to enable SSH "
                 "access to the instance",
-    Type="String"))
+    Type="String")
+        self.t.add_parameter(my_param1)
+
+        my_instance1 = ec2.Instance("myinstance1", ImageId=self.ami_name, InstanceType="t1.micro",
+                                    KeyName=Ref(my_param1),
+                                    Tags=[{"key": "name", "value": "my_instance1"}])
+        self.t.add_resource(my_instance1)
 
         self.t.add_output(Output(
         "PublicIP",

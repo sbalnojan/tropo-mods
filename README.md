@@ -1,6 +1,6 @@
 # tropo-mods
 
-Write 10 times less Cloudformation using tropo-mods (a module catalog for troposphere). Defining infrastructure
+Write 10 times less CloudFormation using tropo-mods (a catalog of troposphere code). Defining infrastructure
 should be this simple:
 ````python
 import tropo_mods.auto_ec2 as auto_ec2
@@ -14,7 +14,6 @@ should produce
 Parameters: 
   SshKeyName: 
     Type: String
-    Default: testKey
     
 Resources:
     myinstance1:
@@ -31,11 +30,10 @@ Outputs:
   Output1:
     Description: myinstance1 public IP
     Value: !GetAtt myinstance1.PublicIp
-    Export:
-      Name: myinstance1PublicIp
         
 ````
 
+### Next Up
 Code like
 ````python
 my_instance = auto_ec2(asg=False)
