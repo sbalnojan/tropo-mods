@@ -1,5 +1,6 @@
 from troposphere import Parameter, Output, Ref, GetAtt, Base64
 import troposphere.ec2 as ec2
+import troposphere.iam as iam
 
 
 class AutoEc2:
@@ -61,6 +62,13 @@ class AutoEc2:
         self.t.resources["myinstance1"].properties["UserData"] = Base64(
             user_data
         )
+
+    def add_profile(self,access_to):
+        #role =iam.Role()
+        #profile = iam.InstanceProfile(Roles=Ref(role),
+                                      InstanceProfileName="someString")
+        #self.t.add_resource(role)
+        #self.t.add_resource(profile)
 
     def print_to_yaml(self):
         print(self.t.to_yaml())

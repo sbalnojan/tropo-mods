@@ -59,6 +59,14 @@ Resources:
           !Sub |
             #!/bin/bash -xe
             ./home/ec2-user/my-app &
+            
+    InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: InstanceRole
+      InstanceProfileName: String345
+
 
 ````
 ### Next Up 2
