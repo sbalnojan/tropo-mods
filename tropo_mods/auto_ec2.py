@@ -1,4 +1,4 @@
-from troposphere import Parameter, Output, Ref, GetAtt
+from troposphere import Parameter, Output, Ref, GetAtt, Base64
 import troposphere.ec2 as ec2
 
 
@@ -39,6 +39,27 @@ class AutoEc2:
                 "EC2 instance",
                 Value=GetAtt(my_instance1, "PublicIp"),
             )
+        )
+
+    def add_sg(self, port, cidrIp):
+        instance_security_group_rule = ec2.SecurityGroupRule(
+            IpProtocol="tcp", FromPort=port, ToPort=port, CidrIp=cidrIp
+        )
+
+        # Security group that's applied to the Mount Targets.
+        instance_security_group = ec2.SecurityGroup(
+            "SecurityGroup1",
+            SecurityGroupIngress=[instance_security_group_rule],
+            GroupDescription="Allow NFS over TCP",
+        )
+        self.t.add_resource(instance_security_group)
+        self.t.resources["myinstance1"].properties["SecurityGroups"] = [
+            Ref(instance_security_group)
+        ]
+
+    def add_ud(self, user_data):
+        self.t.resources["myinstance1"].properties["UserData"] = Base64(
+            user_data
         )
 
     def print_to_yaml(self):

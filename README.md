@@ -36,11 +36,14 @@ Outputs:
 
 ````python
 my_instance = auto_ec2()
-my_instance.add_sg(port=3000,cidrIp="0.0.0.0/0")
+my_instance.add_sg(port="3000",cidrIp="0.0.0.0/0")
 my_instance.add_ud("!Sub | #!/bin/bash -xe "\
             "./home/ec2-user/my-app &")
+my_instance.add_profile(accessTo="codepipeline:*")
 ````
-should turn into an instance running our app, open to any http traffic on port 3000.
+should turn into an instance running our app, open to any http traffic on port 3000, and 
+give the instance permissions to access anything on AWS CodePipeline. In a CF Template
+this would look like the following blob:
 ````bash
 Resources:
   EC2Instance:
