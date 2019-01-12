@@ -1,6 +1,8 @@
 from troposphere import Parameter, Output, Ref, GetAtt, Base64
 import troposphere.ec2 as ec2
 import troposphere.iam as iam
+from awacs.aws import Allow, Statement, Principal, Policy, PolicyDocument
+from awacs.sts import AssumeRole
 
 
 class AutoEc2:
@@ -63,12 +65,26 @@ class AutoEc2:
             user_data
         )
 
-    def add_profile(self,access_to):
-        #role =iam.Role()
-        #profile = iam.InstanceProfile(Roles=Ref(role),
-                                      InstanceProfileName="someString")
-        #self.t.add_resource(role)
-        #self.t.add_resource(profile)
+    def add_profile(self, access_to):
+        role = iam.Role(
+            "InstanceRole1",
+            AssumeRolePolicyDocument=Policy(
+                Statement=[
+                    Statement(
+                        Effect=Allow,
+                        Action=[AssumeRole],
+                        Principal=Principal("Service", ["ec2.amazonaws.com"]),
+                    )
+                ]
+            ),
+        )
+        profile = iam.InstanceProfile(
+            "InstanceProfile1",
+            Roles=Ref(role),
+            InstanceProfileName="someString",
+        )
+        self.t.add_resource(role)
+        self.t.add_resource(profile)
 
     def print_to_yaml(self):
         print(self.t.to_yaml())
