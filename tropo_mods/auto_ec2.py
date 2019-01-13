@@ -1,8 +1,9 @@
 from troposphere import Parameter, Output, Ref, GetAtt, Base64
 import troposphere.ec2 as ec2
 import troposphere.iam as iam
-from awacs.aws import Allow, Statement, Principal, Policy, PolicyDocument
-from awacs.sts import AssumeRole
+
+# from awacs.aws import Allow, Statement, Principal, PolicyDocument
+# from awacs.sts import AssumeRole
 
 
 class AutoEc2:
@@ -66,17 +67,33 @@ class AutoEc2:
         )
 
     def add_profile(self, access_to):
+        InstancePolicy1 = iam.Policy(
+            "InstancePolicy1",
+            PolicyName="InstancePolicy1",
+            PolicyDocument={
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Action": [access_to],
+                        "Resource": ["*"],
+                        "Effect": "Allow",
+                    }
+                ],
+            },
+        )
         role = iam.Role(
             "InstanceRole1",
-            AssumeRolePolicyDocument=Policy(
-                Statement=[
-                    Statement(
-                        Effect=Allow,
-                        Action=[AssumeRole],
-                        Principal=Principal("Service", ["ec2.amazonaws.com"]),
-                    )
-                ]
-            ),
+            AssumeRolePolicyDocument={
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Action": "sts:AssumeRole",
+                        "Principal": {"Service": "ec2.amazonaws.com"},
+                        "Effect": "Allow",
+                    }
+                ],
+            },
+            Policies=[InstancePolicy1],
         )
         profile = iam.InstanceProfile(
             "InstanceProfile1",
