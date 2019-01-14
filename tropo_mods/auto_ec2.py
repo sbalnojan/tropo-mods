@@ -32,7 +32,7 @@ class AutoEc2:
             ImageId=self.ami_name,
             InstanceType="t1.micro",
             KeyName=Ref(my_param1),
-            Tags=[{"key": "name", "value": "my_instance1"}],
+            Tags=[{"Key": "name", "Value": "my_instance1"}],
         )
         self.t.add_resource(my_instance1)
 
