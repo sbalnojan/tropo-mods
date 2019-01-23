@@ -1,11 +1,12 @@
 PROJECT_NAME := "tropo-mods"
 
-# .PHONY: example_simple_ec2
-#
 example_simple_ec2: ## Print the ec2_basic.py example to CF template file
-	python3 examples/ec2_basic.py > examples/simple_ec2.yml
+	python3 examples/ec2_basic.py > examples/cf_ec2_basic.yml
 
-dep:
+example_ec2_sg: ## Print the ec2_sg.py example to CF template file
+	    python3 examples/ec2_sg.py > examples/cf_ec2_sg.yml
+
+dep: ## Install the dependencies
 	pip install -r requirements.txt
 
 help: ## Display this help screen

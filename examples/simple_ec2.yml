@@ -10,7 +10,7 @@ Resources:
   myinstance1:
     Properties:
       ImageId: ami-0eaec5838478eb0ba
-      InstanceType: t2.micro
+      InstanceType: t1.micro
       KeyName: !Ref 'SshKeyName'
       Tags:
         - Key: name

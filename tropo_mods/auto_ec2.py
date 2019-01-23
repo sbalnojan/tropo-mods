@@ -107,7 +107,7 @@ class AutoEc2:
         )
         profile = iam.InstanceProfile(
             "InstanceProfile1",
-            Roles=Ref(role),
+            Roles=[Ref(role)],
             InstanceProfileName="someString",
         )
         self.t.add_resource(role)
