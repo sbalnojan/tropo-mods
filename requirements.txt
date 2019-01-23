@@ -1,2 +1,3 @@
 troposphere
 awacs
+git+https://github.com/sbalnojan/tropo-mods/
