@@ -23,7 +23,7 @@ class AutoEc2:
         my_instance1 = ec2.Instance(
             "myinstance1",
             ImageId=self.ami_name,
-            InstanceType="t1.micro",
+            InstanceType="t2.micro",
             Tags=[{"Key": "name", "Value": "my_instance1"}],
         )
 
@@ -39,7 +39,7 @@ class AutoEc2:
             my_instance1 = ec2.Instance(
                 "myinstance1",
                 ImageId=self.ami_name,
-                InstanceType="t1.micro",
+                InstanceType="t2.micro",
                 KeyName=Ref(my_param1),
                 Tags=[{"Key": "name", "Value": "my_instance1"}],
             )
