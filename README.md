@@ -2,19 +2,21 @@
 
 Write 10 times less CloudFormation using tropo-mods (a catalog of troposphere code). Defining infrastructure
 should be this simple:
-````python
+
+```python
 import tropo_mods.auto_ec2 as auto_ec2
 my_instance = auto_ec2(ami="ami-a12345678", asg=False)
 
 print(my_instance.to_yaml())
-````
+```
 
 should produce
-````bash
-Parameters: 
-  SshKeyName: 
+
+```bash
+Parameters:
+  SshKeyName:
     Type: String
-    
+
 Resources:
     myinstance1:
         Properties:
@@ -30,21 +32,23 @@ Outputs:
   Output1:
     Description: myinstance1 public IP
     Value: !GetAtt myinstance1.PublicIp
-        
-````
-### Next Up 1
+```
 
-````python
+### Example 2
+
+```python
 my_instance = auto_ec2()
 my_instance.add_sg(port="3000",cidrIp="0.0.0.0/0")
 my_instance.add_ud("!Sub | #!/bin/bash -xe "\
             "./home/ec2-user/my-app &")
 my_instance.add_profile(accessTo="codepipeline:*")
-````
-should turn into an instance running our app, open to any http traffic on port 3000, and 
+```
+
+should turn into an instance running our app, open to any http traffic on port 3000, and
 give the instance permissions to access anything on AWS CodePipeline. In a CF Template
 this would look like the following blob:
-````bash
+
+```bash
 Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -59,27 +63,32 @@ Resources:
           !Sub |
             #!/bin/bash -xe
             ./home/ec2-user/my-app &
-            
+
     InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
         - Ref: InstanceRole
       InstanceProfileName: String345
+```
 
+### Next Up 1
 
-````
-### Next Up 2
 Code like
-````python
+
+```python
 my_instance = auto_ec2(asg=False)
 my_instance.add_sg(127.0.0.1)
-````
+```
+
 should produce an instance only accessible via SSH/TCP from 127.0.0.1 and code like
 
-````python
+```python
 my_instance = auto_ec2(ami="ami-a12345678")
 
 print(my_instance.to_yaml())
-````
+```
+
 should produce an ec2 instance with an auto scaling group.
+
+# Current modules
