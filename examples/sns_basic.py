@@ -7,3 +7,6 @@ my_instance = auto_sns.AutoSNS(
 )
 
 my_instance.print_to_yaml()
+
+# should also produce: ARN as output (?)
+# should also produce: Subscription to E-Mail
