@@ -23,3 +23,4 @@ class AutoSNS:
 
     def print_to_yaml(self):
         print(self.t.to_yaml())
+        return self.t.to_yaml()
